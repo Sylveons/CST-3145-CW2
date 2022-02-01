@@ -12,7 +12,7 @@ app.use(express.static('public'));
 
 //middleware
 app.use(bodyParser.json());
-app.use(cors());
+
 
 const posts = require('./routes/api/posts')
 

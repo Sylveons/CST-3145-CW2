@@ -73,7 +73,7 @@ return client.db("After-School-Club").collection('Lessons');
 
 
 
-
+    }
 
 async function loadorders() {
 
@@ -92,7 +92,6 @@ return client.db("After-School-Club").collection('Orders');
   }
 }
 
-}
 
 
 module.exports = router;
