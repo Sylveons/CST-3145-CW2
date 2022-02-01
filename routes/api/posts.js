@@ -77,23 +77,17 @@ return client.db("After-School-Club").collection('Lessons');
 
 async function loadorders() {
 
-    try{
-
+  
     const client = await mongodb.MongoClient.connect
     (uri,
      {UseNewUrlParser: true,
-        useCreateIndex: true,
-     useUnifiedTopology: true,})
+       })
 
 
 return client.db("After-School-Club").collection('Orders');
 
 
-} catch(err) {
-    alert(err); // TypeError: failed to fetch
-  }
-}
-
+    }
 
 
 module.exports = router;
