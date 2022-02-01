@@ -10,14 +10,10 @@ const uri =   process.env.MONGODB_URI || 'mongodb+srv://Sylveons:Awesome123@clus
 //get post
 
 
-router.get('/test', async (req,res) => {
-  
-    res.send("pain")
-} );
 
 
 
-router.get('/', async (req,res) => {
+router.get('/lessons', async (req,res) => {
     const lessons = await loadlesson();
     res.send(await lessons.find({}).toArray())
 } );
