@@ -16,12 +16,7 @@
 <body>
 
 
-
-
-
-
-
-    <div v-for="(lesson,index) in lessons">
+    <div v-for="lesson in lessons">
         <figure>
             <img v-bind:src="lesson.Image" height="100px" width="100px">
         </figure>
@@ -41,145 +36,7 @@
             Only 1 Space left!
         </span>
 
-
-    </div>
-
-
-    <div v-for="lesson in lessons">
-        <figure>
-            <img v-bind:src="lesson.Image" height="100px" width="100px">
-        </figure>
-
-        <h2 v-text="lesson.Subject"></h2>
-        <p v-html="lesson.Location"></p>
-        <p v-html="lesson.Price"></p>
-        <p v-html="lesson.Spaces"></p>
-
-        <div v-for="lesson in Sortedlessons">
-            <figure>
-                <img v-bind:src="lesson.Image" height="100px" width="100px">
-            </figure>
-
-            <h2 v-text="lesson.Subject"></h2>
-            <p v-html="lesson.Location"></p>
-            <p v-html="lesson.Price"></p>
-            <p v-html="lesson.Spaces"></p>
-
-        </div>
-
-
-        <button class="checkoutbutton" v-on:click="showCheckout()" v-bind:disabled="cart.length === 0">
-            <!-- add the cart icon -->
-            <span class="fas fa-cart-plus"></span> Checkout
-        </button>
-
-    </div>
-
-
-
-    <div v-if='showLesson2'>
-
-        <header>
-
-            <h1 v-text="sitename"></h1>
-        </header>
-        <label for="Sort">Sort By Price:</label>
-
-        <button class="highest" v-on:click="SortH()" v-bind:disabled="showLesson2===true">Highest</button>
-        <button class="Lowest" v-on:click="SortH()" v-bind:disabled="showLesson===true">Lowest</button>
-
-
-        <div v-for="lesson in Sortedlessons2">
-            <figure>
-                <img v-bind:src="lesson.Image" height="100px" width="100px">
-            </figure>
-
-            <h2 v-text="lesson.Subject"></h2>
-            <p v-html="lesson.Location"></p>
-            <p v-html="lesson.Price"></p>
-            <p v-html="lesson.Spaces"></p>
-
-
-
-            <button class="add to cart" v-on:click="addToCart(lesson)" v-bind:disabled="lesson.Spaces === 0 ">Add to
-                cart</button>
-            <span>Buy Now! <i class="fas fa-star"></i></span>
-
-            <span v-if='lesson.spaces === 0'>All out!
-                Only 1 Space left!
-            </span>
-
-
-        </div>
-
-
-        <button class="checkoutbutton" v-on:click="showCheckout()" v-bind:disabled="cart.length === 0">
-            <!-- add the cart icon -->
-            <span class="fas fa-cart-plus"></span> Checkout
-        </button>
-
-    </div>
-
-
-
-
-
-
-
-    <div v-if='Checkout'>
-
-        <h2>Checkout</h2>
-
-        <p v-if="errors.length">
-
-        <ul>
-            <li v-for="error in errors">{{ error }}</li>
-        </ul>
-        </p>
-
-        <p>
-            <strong>First Name:</strong>
-            <!-- This input field is bound to 'firstName' in the 'order' object -->
-            <input v-model="order.firstName" />
-        </p>
-        <p>
-            <strong>Last Name:</strong>
-            <!-- This input field is bound to 'lastName' in the 'order' object -->
-            <input v-model="order.lastName" />
-        </p>
-
-        <strong>Phone:</strong>
-        <!-- This input field is bound to 'lastName' in the 'order' object -->
-        <input v-model="order.Phone" />
-        </p>
-        <h2>Order Information</h2>
-        <p>First Name: {{order.firstName}}</p>
-        <p>Last Name: {{order.lastName}}</p>
-
-        <p>Phone: {{order.Phone}}</p>
-
-        <button class="Confirm" v-on:click="Validation()"> Confirm</button>
-        <div v-for="lesson in cart">
-            <figure>
-                <figure>
-                    <img v-bind:src="lesson.Image" height="100px" width="100px">
-                </figure>
-
-
-                <h2 v-text="lesson.Subject"></h2>
-                <p v-html="lesson.Location"></p>
-                <p v-html="lesson.Price"></p>
-                <p v-html="cartCount(lesson)"></p>
-
-                <button class="add to cart" v-on:click="remove(lesson)"> Remove</button>
-
-            </figure>
-        </div>
-
-        </main>
-
-
-    </div>
+</div>
 
 
 
@@ -192,57 +49,31 @@
 
 
 
-
-
-
-        let app = new Vue({
+        let store = new Vue({
             data: { lessons: {} },
+
+           
             // this function runs when creating the Vue instance
             created: function () {
                 // replace the URL to your Heroku app and route
-                fetch('https://dominique-walker-cst1345-cw2.herokuapp.com/lessons', { mode: 'no-cors'}).then(
+                fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
                     function (response) {
                         response.json().then(
                             function (json) {
                                 
                                store.lessons = json;
+                               console.log(JSON.stringify(json))
 
+                            
                             });
                     })
             }
         })
 
-            // let app = new Vue({
-
-            //     el: '#app',
-            //     data: {
-
-            //         sitename: 'After School Clubs',
-
-
-
-            //         lessons: lessons,
-
-            //         cart: [],
-            //         errors: [],
-
-            //         Checkout: false,
-            //         showLesson: true,
-            //         showLesson2: false,
-            //         order: {
-
-
-
-            //             firstName: null,
-            //             lastName: null,
-            //             Phone: null,
-            //             searchterm: null,
-            //             searchresult: null,
-            //         },
-
-            //     },
-
-            // })
+       
 
 
     </script>
+
+
+   
