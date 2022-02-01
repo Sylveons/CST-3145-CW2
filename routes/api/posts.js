@@ -61,18 +61,16 @@ router.post('/orders', async(req, res) => {
 
 async function loadlesson() {
 
-    try{
-    const client =  mongodb.MongoClient.connect
+    
+    const client = await mongodb.MongoClient.connect
     (uri,
      {UseNewUrlParser: true})
 
 
 return client.db("After-School-Club").collection('Lessons');
 
-} catch(err) {
-    alert(err); // TypeError: failed to fetch
-  }
-}
+
+
 
 
 
@@ -93,7 +91,7 @@ return client.db("After-School-Club").collection('Orders');
   }
 }
 
-
+}
 
 
 module.exports = router;
