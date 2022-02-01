@@ -5,6 +5,7 @@ const mongodb = require('mongodb')
 const router = express.Router();
 
 
+
 var uri = 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 //get post
 
