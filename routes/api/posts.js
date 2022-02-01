@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 
-const uri =   process.env.MONGODB_URI || 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/After-School-Club?retryWrites=true&w=majority'
+const uri =   process.env.MONGODB_URI || 'mongodb+srv://Sylveons:Awesome123@cluster0.he0tv.mongodb.net/After-School-Club?retryWrites=true&w=majority'
 //get post
 
 
