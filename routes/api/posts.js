@@ -80,10 +80,10 @@ async function loadorders() {
     try{
 
     const client = await mongodb.MongoClient.connect
-    (uri,
+    (uri || process.env.MONGOLAB_URI,
      {UseNewUrlParser: true,
-     useUnifiedTopology: false,
-     useNewUrlParser: true})
+        useCreateIndex: true,
+     useUnifiedTopology: true,})
 
 
 return client.db("After-School-Club").collection('Orders');
