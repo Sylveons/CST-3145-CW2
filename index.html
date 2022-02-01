@@ -6,74 +6,332 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-       
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <script src="Lessons.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 </head>
 
 <body>
+    <div id="store">
+        <main>
+            <h1 v-text="sitename"></h1>
 
 
-    <div v-for="lesson in lessons">
-        <figure>
-            <img v-bind:src="lesson.Image" height="100px" width="100px">
-        </figure>
-
-        <h2 v-text="lesson.Subject"></h2>
-        <p v-html="lesson.Location"></p>
-        <p v-html="lesson.Price"></p>
-        <p v-html="lesson.Spaces"></p>
+            <header>
 
 
+            </header>
+            <label for="Sort">Sort By Price:</label>
 
-        <button class="add to cart" v-on:click="addToCart(lesson)" v-bind:disabled="lesson.Spaces === 0 ">Add to
-            cart</button>
-        <span>Buy Now! <i class="fas fa-star"></i></span>
-
-        <span v-if='lesson.spaces === 0'>All out!
-            Only 1 Space left!
-        </span>
-
-</div>
+            <button class="highest" v-on:click="SortH()" v-bind:disabled="showLesson2===true">Highest</button>
+            <button class="Lowest" v-bind:disabled="showLesson===true">Lowest</button>
 
 
 
+            <div v-for="lesson in lessons">
+                <figure>
+                    <img v-bind:src="lesson.Image" height="100px" width="100px">
+                </figure>
+
+                <h2 v-text="lesson.Subject"></h2>
+                <p v-html="lesson.Location"></p>
+                <p v-html="lesson.Price"></p>
+                <p v-html="lesson.Spaces"></p>
 
 
 
+                <button class="add to cart" v-on:click="addToCart(lesson)" v-bind:disabled="lesson.Spaces === 0 ">Add to
+                    cart</button>
+                <span>Buy Now! <i class="fas fa-star"></i></span>
 
+                <span v-if='lesson.spaces === 0'>All out!
+                    Only 1 Space left!
+                </span>
+
+
+            </div>
+
+
+
+    </div>
+
+
+    <button class="checkoutbutton" v-on:click="showCheckout()" v-bind:disabled="cart.length === 0">
+        <!-- add the cart icon -->
+        <span class="fas fa-cart-plus"></span> Checkout
+    </button>
+
+    </div>
+</main>
 
     <script>
 
 
 
-        let store = new Vue({
-            data: { lessons: {} },
+let store = new Vue({
 
-           
-            // this function runs when creating the Vue instance
-            created: function () {
-                // replace the URL to your Heroku app and route
-                fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
-                    function (response) {
-                        response.json().then(
-                            function (json) {
-                                
-                               store.lessons = json;
-                               console.log(JSON.stringify(json))
+    el: '#store',
+    
+ 
+data: { lessons: {}},
 
-                            
-                            });
-                    })
-            }
+lessons, lessons,
+
+created: function () {
+    fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
+        function (response) {
+     
+            response.json().then(
+                function (json) {
+
+                    store.lessons = json;
+
+                    console.log(JSON.stringify(json))
+                    lessons.push(json)
+                    console.log(lessons);
+
+                    
+
+                });
+
+
+
+
         })
 
-       
+}
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        let app = new Vue({
+
+            el: '#app',
+            data: {
+
+                sitename: 'After School Clubs',
+
+
+
+
+                cart: [],
+                errors: [],
+
+                Checkout: false,
+                showLesson: true,
+                showLesson2: false,
+                order: {
+
+
+
+                    firstName: null,
+                    lastName: null,
+                    Phone: null,
+                    searchterm: null,
+                    searchresult: null,
+                },
+
+            },
+
+
+
+
+
+
+
+
+
+            methods: {
+
+                addToCart(lesson) {
+
+                    lesson.Spaces--;
+
+                    { this.cart.push(lesson); }
+
+                },
+
+
+                canAddToCart(lesson) {
+                    return lesson.Spaces > this.cartCount(lesson);
+
+                },
+
+
+                cartCount(lesson) {
+                    let count = 0;
+                    for (var i = 0; i < this.cart.length; i++) {
+
+                        if (this.cart[i] == lesson) {
+
+                            count++;
+                        }
+                    }
+                    return count;
+                },
+
+                remove(lesson) {
+
+                    lesson.Spaces++;
+                    { this.cart.splice(lesson); }
+                },
+
+
+
+
+                showCheckout() {
+
+                    this.Checkout = this.Checkout ? false : true;
+
+
+
+
+                },
+
+                SortH() {
+
+
+                    this.showLesson2 = this.showLesson2 ? false : true;
+                    this.showLesson = this.showLesson ? false : true;
+
+
+                },
+
+                Validation() {
+
+                    if (this.firstName && this.lastName && this.Phone) {
+                        return true;
+                    }
+                    var numbers = /^[0-9]+$/;
+                    var letters = /^[A-Za-z]+$/;
+
+                    this.errors = [];
+
+                    if (!this.order.firstName) {
+                        this.errors.push('First Name required.');
+                    }
+
+                    if (!this.order.firstName.match(letters)) {
+                        this.errors.push('First Name must only contain letters.');
+                    }
+
+
+                    if (!this.order.lastName) {
+                        this.errors.push('Last Name required.');
+
+                    }
+
+                    if (!this.order.lastName.match(letters)) {
+                        this.errors.push('Last Name must only contain letters.');
+                    }
+                    if (!this.order.Phone) {
+                        this.errors.push('Phone Number required.');
+                    }
+
+
+                    if (!this.order.Phone.match(numbers)) {
+                        this.errors.push('Phone Number must only contain numbers.');
+                    }
+
+
+
+
+                    if (this.errors.length === 0) {
+
+                        alert("Order Confirmed!");
+
+
+                    }
+                },
+
+            
+
+
+
+
+            computed: {
+                Sortedlessons() {
+
+
+
+
+                    if (this.lessons.length > 0) {
+                        let lessonsArray = this.lessons.slice(0);
+                        function compare(a, b) {
+
+                            if (a.Price.toLowerCase() < b.Price.toLowerCase())
+                                return -1;
+                            if (a.Price.toLowerCase() > b.Price.toLowerCase())
+                                return 1;
+                            return 0;
+                        }
+                        return lessonsArray.sort(compare);
+                    }
+
+                },
+
+
+                Sortedlessons2() {
+
+
+                    let lessonsArray = this.lessons.slice(0);
+                    function compare(a, b) {
+
+                        if (a.Price.toLowerCase() > b.Price.toLowerCase())
+                            return -1;
+                        if (a.Price.toLowerCase() < b.Price.toLowerCase())
+                            return 1;
+                        return 0;
+                    }
+                    return lessonsArray.sort(compare);
+
+                },
+
+
+
+
+
+            },
+
+        
+        }
+
+    })
+
+
+
 
 
     </script>
 
 
-   
+
+    </div>
+
+</body>
+
+</html>
+
+</body>
+
+</html>
