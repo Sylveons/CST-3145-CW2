@@ -17,23 +17,23 @@ router.get('/test', async (req,res) => {
 
 
 router.get('/', async (req,res) => {
-    const lessons = await loadlesson();
-    res.send(await lessons.find({}).toArray())
+    const lessons =  loadlesson();
+    res.send( lessons.find({}).toArray())
 } );
 
 
 
 router.get('/orders', async (req,res) => {
-    const orders = await loadorders();
-    res.send(await orders.find({}).toArray())
+    const orders =  loadorders();
+    res.send( orders.find({}).toArray())
 } );
 
 //add post
 
 router.post('/orders', async(req, res) => {
 
-    const orders = await loadorders();
-    await orders.insertOne({
+    const orders =  loadorders();
+     orders.insertOne({
 
         Firstname: req.body.Firstname,
         Lastname: req.body.Lastname,
@@ -64,8 +64,8 @@ router.post('/orders', async(req, res) => {
 async function loadlesson() {
 
     try{
-    const client = await mongodb.MongoClient.connect
-    (uri,
+    const client =  mongodb.MongoClient.connect
+    (process.env.MONGODB_URI ||'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
      {UseNewUrlParser: true})
 
 
@@ -82,7 +82,7 @@ async function loadorders() {
 
     try{
 
-    const client = await mongodb.MongoClient.connect
+    const client =  mongodb.MongoClient.connect
     (process.env.MONGODB_URI|| 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ,
      {UseNewUrlParser: true})
 
