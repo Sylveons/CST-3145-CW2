@@ -1,6 +1,7 @@
 const express = require('express');
 const { route } = require('express/lib/application');
 const mongodb = require('mongodb')
+var uri = 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 const router = express.Router();
 
@@ -64,7 +65,7 @@ async function loadlesson() {
 
     try{
     const client = await mongodb.MongoClient.connect
-    (process.env.MONGODB_URI ||'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    (uri,
      {UseNewUrlParser: true})
 
 
