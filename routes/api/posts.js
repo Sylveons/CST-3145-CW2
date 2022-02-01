@@ -1,11 +1,11 @@
 const express = require('express');
 const { route } = require('express/lib/application');
 const mongodb = require('mongodb')
-var uri = 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 const router = express.Router();
 
 
+var uri = 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 //get post
 
 
@@ -17,23 +17,23 @@ router.get('/test', async (req,res) => {
 
 
 router.get('/', async (req,res) => {
-    const lessons =  loadlesson();
-    res.send( lessons.find({}).toArray())
+    const lessons = await loadlesson();
+    res.send(await lessons.find({}).toArray())
 } );
 
 
 
 router.get('/orders', async (req,res) => {
-    const orders =  loadorders();
-    res.send( orders.find({}).toArray())
+    const orders = await loadorders();
+    res.send(await orders.find({}).toArray())
 } );
 
 //add post
 
 router.post('/orders', async(req, res) => {
 
-    const orders =  loadorders();
-     orders.insertOne({
+    const orders = await loadorders();
+    await orders.insertOne({
 
         Firstname: req.body.Firstname,
         Lastname: req.body.Lastname,
@@ -57,15 +57,13 @@ router.post('/orders', async(req, res) => {
 
 // res.send('Item Updated!');
 
-// })
-
-
+// }
 
 async function loadlesson() {
 
     try{
     const client =  mongodb.MongoClient.connect
-    (process.env.MONGODB_URI ||'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    (uri,
      {UseNewUrlParser: true})
 
 
@@ -82,7 +80,7 @@ async function loadorders() {
 
     try{
 
-    const client =  mongodb.MongoClient.connect
+    const client = await mongodb.MongoClient.connect
     (process.env.MONGODB_URI|| 'mongodb+srv://Sylveons:Awesome123@cluster0.bro9k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ,
      {UseNewUrlParser: true})
 
