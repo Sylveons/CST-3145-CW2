@@ -13,14 +13,6 @@ const path = require('path')
 
 
 
-app.use(function(req, res, next) {
-  router.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "*");
-    res.header("Access-Control-Allow-Headers", "*");
-    next();});
-    
-  });
 
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
