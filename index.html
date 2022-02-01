@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+       
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -44,7 +45,7 @@
     </div>
 
 
-    <div v-for="lesson in Lessons">
+    <div v-for="lesson in lessons">
         <figure>
             <img v-bind:src="lesson.Image" height="100px" width="100px">
         </figure>
@@ -195,16 +196,16 @@
 
 
         let app = new Vue({
-            data: { Lessons: {} },
+            data: { lessons: {} },
             // this function runs when creating the Vue instance
             created: function () {
                 // replace the URL to your Heroku app and route
-                fetch('https://dominique-walker-cst1345-cw2.herokuapp.com/').then(
+                fetch('https://dominique-walker-cst1345-cw2.herokuapp.com/lessons', { mode: 'no-cors'}).then(
                     function (response) {
                         response.json().then(
                             function (json) {
                                 
-                                store.Lessons = json;
+                               store.lessons = json;
 
                             });
                     })

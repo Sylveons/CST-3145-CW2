@@ -11,6 +11,11 @@ const uri =   process.env.MONGODB_URI || 'mongodb+srv://Sylveons:Awesome123@clus
 
 
 
+router.get('/', async (req,res) => {
+    
+    res.send("Select a collection /lessons or /orders")
+} );
+
 
 
 router.get('/lessons', async (req,res) => {
