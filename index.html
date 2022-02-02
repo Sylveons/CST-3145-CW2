@@ -50,7 +50,7 @@
 
 
 
-    </div>
+  
 
 
     <button class="checkoutbutton" v-on:click="showCheckout()" v-bind:disabled="cart.length === 0">
@@ -58,10 +58,9 @@
         <span class="fas fa-cart-plus"></span> Checkout
     </button>
 
-    </div>
+   
 
 
-    <div v-if='Checkout'>
 
         <h2>Checkout</h2>
 
@@ -138,21 +137,25 @@
 
 
 
-                    lessons: {},
+                    cart: [],
 
+                    lessons: {},
+                    order: {
+
+
+
+                        firstName: null,
+                        lastName: null,
+                        Phone: null,
+                    },
 
 
 
                     sitename: 'After School Clubs',
 
 
-                    
-                    cart: [],
-
-
-
                 },
-                mounted: function () {
+                created: function () {
                     fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
                         function (response) {
 
@@ -186,7 +189,7 @@
 
                         {
                             this.cart.push(lesson);
-                            console.log(this.cart)
+                            console.log(cart)
                         }
 
                     },
