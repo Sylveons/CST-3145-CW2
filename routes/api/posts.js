@@ -1,6 +1,8 @@
 const express = require('express');
 const { route } = require('express/lib/application');
 const mongodb = require('mongodb')
+const app = express();
+
 
 const router = express.Router();
 
@@ -18,21 +20,22 @@ router.get('/', async (req,res) => {
 
 
 
-router.get('/lessons', async (req,res) => {
+router.get('/lessons', async (req,res,next) => {
     const lessons = await loadlesson();
     res.send(await lessons.find({}).toArray())
+next();
 } );
 
 
 
-router.get('/orders', async (req,res) => {
+router.get('/orders', async (req,res,next) => {
     const orders = await loadorders();
     res.send(await orders.find({}).toArray())
 } );
 
 //add post
 
-router.post('/orders', async(req, res) => {
+router.post('/orders', async(req, res, next) => {
 
     const orders = await loadorders();
     await orders.insertOne({
@@ -45,21 +48,10 @@ router.post('/orders', async(req, res) => {
     });
 
     res.status(201).send()
+    next()
 })
 
 
-//update post 
-
-// router.put('/orders', async(req, res) => {
-
-//     const orders = await loadlesson();
-//     await orders.findOneAndUpdate(req.body.id,{
-//     Spaces: req.body.spaces
-//     })
-
-// res.send('Item Updated!');
-
-// }
 
 async function loadlesson() {
 
@@ -91,41 +83,12 @@ return client.db("After-School-Club").collection('Orders');
     }
 
 
+    
+app.use((req, res, next) => {
+    console.log(req);
+    next();
+  });
+
+
 module.exports = router;
 
-
-let store = new Vue({
-
-    el: '#store',
-    
- 
-data: { lessons: {}},
-
-lessons, lessons,
-
-created: function () {
-    fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
-        function (response) {
-     
-            response.json().then(
-                function (json) {
-
-                    store.lessons = json;
-
-                    console.log(JSON.stringify(json))
-                    lessons.push(json)
-                    console.log(lessons);
-
-                    
-
-                });
-
-
-
-
-        })
-
-}
-
-
-})
