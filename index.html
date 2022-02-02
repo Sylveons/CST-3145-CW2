@@ -8,7 +8,7 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
-    <script src="Lessons.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 </head>
@@ -23,12 +23,7 @@
 
 
             </header>
-            <label for="Sort">Sort By Price:</label>
-
-            <button class="highest" v-on:click="SortH()" v-bind:disabled="showLesson2===true">Highest</button>
-            <button class="Lowest" v-bind:disabled="showLesson===true">Lowest</button>
-
-
+            
 
             <div v-for="lesson in lessons">
                 <figure>
@@ -64,265 +59,297 @@
     </button>
 
     </div>
-</main>
-
-    <script>
 
 
+    <div v-if='Checkout'>
 
-let store = new Vue({
+        <h2>Checkout</h2>
 
-    el: '#store',
-    
- 
-data: { lessons: {}},
+        <p v-if="errors.length">
 
-lessons, lessons,
+        <ul>
+            <li v-for="error in errors">{{ error }}</li>
+        </ul>
+        </p>
 
-created: function () {
-    fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
-        function (response) {
-     
-            response.json().then(
-                function (json) {
+        <p>
+            <strong>First Name:</strong>
+            <!-- This input field is bound to 'firstName' in the 'order' object -->
+            <input v-model="order.firstName" />
+        </p>
+        <p>
+            <strong>Last Name:</strong>
+            <!-- This input field is bound to 'lastName' in the 'order' object -->
+            <input v-model="order.lastName" />
+        </p>
 
-                    store.lessons = json;
+        <strong>Phone:</strong>
+        <!-- This input field is bound to 'lastName' in the 'order' object -->
+        <input v-model="order.Phone" />
+        </p>
+        <h2>Order Information</h2>
+        <p>First Name: {{order.firstName}}</p>
+        <p>Last Name: {{order.lastName}}</p>
 
-                    console.log(JSON.stringify(json))
-                    lessons.push(json)
-                    console.log(lessons);
+        <p>Phone: {{order.Phone}}</p>
 
+        <button class="Confirm" v-on:click="Validation()"> Confirm</button>
+        <div v-for="lesson in cart">
+            <figure>
+                <figure>
+                    <img v-bind:src="lesson.Image" height="100px" width="100px">
+                </figure>
+
+
+                <h2 v-text="lesson.Subject"></h2>
+                <p v-html="lesson.Location"></p>
+                <p v-html="lesson.Price"></p>
+                <p v-html="cartCount(lesson)"></p>
+
+                <button class="add to cart" v-on:click="remove(lesson)"> Remove</button>
+
+            </figure>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </main>
+
+        <script>
+
+
+
+            let store = new Vue({
+
+                el: '#store',
+
+
+                data: {
+                    lessons: {},
+
+
+                    sitename: 'After School Clubs',
+
+
+
+                    cart: [],
                     
-
-                });
-
-
-
-
-        })
-
-}
-
-
-})
+                  
 
 
 
 
+                },  
+                
+                 Checkout: false,
+                
+                    order: {
+
+
+
+                        firstName: null,
+                        lastName: null,
+                        Phone: null,
+                        
+                    },
 
 
 
 
+                created: function () {
+                    fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
+                        function (response) {
+
+                            response.json().then(
+                                function (json) {
+
+                                    store.lessons = json;
+
+                                    console.log(JSON.stringify(json))
+                                    lessons.push(json)
+                                    console.log(lessons);
+                                });
 
 
 
 
-
-
-
-
-
-
-
-        let app = new Vue({
-
-            el: '#app',
-            data: {
-
-                sitename: 'After School Clubs',
-
-
-
-
-                cart: [],
-                errors: [],
-
-                Checkout: false,
-                showLesson: true,
-                showLesson2: false,
-                order: {
-
-
-
-                    firstName: null,
-                    lastName: null,
-                    Phone: null,
-                    searchterm: null,
-                    searchresult: null,
-                },
-
-            },
-
-
-
-
-
-
-
-
-
-            methods: {
-
-                addToCart(lesson) {
-
-                    lesson.Spaces--;
-
-                    { this.cart.push(lesson); }
+                        })
 
                 },
 
 
-                canAddToCart(lesson) {
-                    return lesson.Spaces > this.cartCount(lesson);
+                methods: {
 
-                },
+                    addToCart(lesson) {
+
+                        lesson.Spaces--;
+
+                        { this.cart.push(lesson); }
+
+                    },
 
 
-                cartCount(lesson) {
-                    let count = 0;
-                    for (var i = 0; i < this.cart.length; i++) {
+                    canAddToCart(lesson) {
+                        return lesson.Spaces > this.cartCount(lesson);
 
-                        if (this.cart[i] == lesson) {
+                    },
 
-                            count++;
+
+                    cartCount(lesson) {
+                        let count = 0;
+                        for (var i = 0; i < this.cart.length; i++) {
+
+                            if (this.cart[i] == lesson) {
+
+                                count++;
+                            }
                         }
-                    }
-                    return count;
-                },
+                        return count;
+                    },
 
-                remove(lesson) {
+                    remove(lesson) {
 
-                    lesson.Spaces++;
-                    { this.cart.splice(lesson); }
-                },
-
-
-
-
-                showCheckout() {
-
-                    this.Checkout = this.Checkout ? false : true;
+                        lesson.Spaces++;
+                        { this.cart.splice(lesson); }
+                    },
 
 
 
 
-                },
+                    showCheckout() {
 
-                SortH() {
-
-
-                    this.showLesson2 = this.showLesson2 ? false : true;
-                    this.showLesson = this.showLesson ? false : true;
-
-
-                },
-
-                Validation() {
-
-                    if (this.firstName && this.lastName && this.Phone) {
-                        return true;
-                    }
-                    var numbers = /^[0-9]+$/;
-                    var letters = /^[A-Za-z]+$/;
-
-                    this.errors = [];
-
-                    if (!this.order.firstName) {
-                        this.errors.push('First Name required.');
-                    }
-
-                    if (!this.order.firstName.match(letters)) {
-                        this.errors.push('First Name must only contain letters.');
-                    }
-
-
-                    if (!this.order.lastName) {
-                        this.errors.push('Last Name required.');
-
-                    }
-
-                    if (!this.order.lastName.match(letters)) {
-                        this.errors.push('Last Name must only contain letters.');
-                    }
-                    if (!this.order.Phone) {
-                        this.errors.push('Phone Number required.');
-                    }
-
-
-                    if (!this.order.Phone.match(numbers)) {
-                        this.errors.push('Phone Number must only contain numbers.');
-                    }
+                        this.Checkout = this.Checkout ? false : true;
 
 
 
 
-                    if (this.errors.length === 0) {
+                    },
 
-                        alert("Order Confirmed!");
-
-
-                    }
-                },
-
-            
+                    SortH() {
 
 
+                        this.showLesson2 = this.showLesson2 ? false : true;
+                        this.showLesson = this.showLesson ? false : true;
 
 
-            computed: {
-                Sortedlessons() {
+                    },
 
+                    Validation() {
 
-
-
-                    if (this.lessons.length > 0) {
-                        let lessonsArray = this.lessons.slice(0);
-                        function compare(a, b) {
-
-                            if (a.Price.toLowerCase() < b.Price.toLowerCase())
-                                return -1;
-                            if (a.Price.toLowerCase() > b.Price.toLowerCase())
-                                return 1;
-                            return 0;
+                        if (this.firstName && this.lastName && this.Phone) {
+                            return true;
                         }
-                        return lessonsArray.sort(compare);
-                    }
+                        var numbers = /^[0-9]+$/;
+                        var letters = /^[A-Za-z]+$/;
 
-                },
+                        this.errors = [];
 
+                        if (!this.order.firstName) {
+                            this.errors.push('First Name required.');
+                        }
 
-                Sortedlessons2() {
-
-
-                    let lessonsArray = this.lessons.slice(0);
-                    function compare(a, b) {
-
-                        if (a.Price.toLowerCase() > b.Price.toLowerCase())
-                            return -1;
-                        if (a.Price.toLowerCase() < b.Price.toLowerCase())
-                            return 1;
-                        return 0;
-                    }
-                    return lessonsArray.sort(compare);
-
-                },
+                        if (!this.order.firstName.match(letters)) {
+                            this.errors.push('First Name must only contain letters.');
+                        }
 
 
+                        if (!this.order.lastName) {
+                            this.errors.push('Last Name required.');
+
+                        }
+
+                        if (!this.order.lastName.match(letters)) {
+                            this.errors.push('Last Name must only contain letters.');
+                        }
+                        if (!this.order.Phone) {
+                            this.errors.push('Phone Number required.');
+                        }
 
 
-
-            },
-
-        
-        }
-
-    })
+                        if (!this.order.Phone.match(numbers)) {
+                            this.errors.push('Phone Number must only contain numbers.');
+                        }
 
 
 
 
+                        if (this.errors.length === 0) {
 
-    </script>
+                            alert("Order Confirmed!");
+
+
+                        }
+                    },
+
+
+
+
+
+
+                    computed: {
+                        Sortedlessons() {
+
+
+
+
+                            if (this.lessons.length > 0) {
+                                let lessonsArray = this.lessons.slice(0);
+                                function compare(a, b) {
+
+                                    if (a.Price.toLowerCase() < b.Price.toLowerCase())
+                                        return -1;
+                                    if (a.Price.toLowerCase() > b.Price.toLowerCase())
+                                        return 1;
+                                    return 0;
+                                }
+                                return lessonsArray.sort(compare);
+                            }
+
+                        },
+
+
+                        Sortedlessons2() {
+
+
+                            let lessonsArray = this.lessons.slice(0);
+                            function compare(a, b) {
+
+                                if (a.Price.toLowerCase() > b.Price.toLowerCase())
+                                    return -1;
+                                if (a.Price.toLowerCase() < b.Price.toLowerCase())
+                                    return 1;
+                                return 0;
+                            }
+                            return lessonsArray.sort(compare);
+
+                        },
+
+
+
+
+
+                    },
+
+
+                }
+
+            })
+
+
+
+
+
+        </script>
 
 
 

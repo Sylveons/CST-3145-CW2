@@ -92,3 +92,40 @@ return client.db("After-School-Club").collection('Orders');
 
 
 module.exports = router;
+
+
+let store = new Vue({
+
+    el: '#store',
+    
+ 
+data: { lessons: {}},
+
+lessons, lessons,
+
+created: function () {
+    fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
+        function (response) {
+     
+            response.json().then(
+                function (json) {
+
+                    store.lessons = json;
+
+                    console.log(JSON.stringify(json))
+                    lessons.push(json)
+                    console.log(lessons);
+
+                    
+
+                });
+
+
+
+
+        })
+
+}
+
+
+})
