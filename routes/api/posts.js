@@ -1,8 +1,6 @@
 const express = require('express');
 const { route } = require('express/lib/application');
 const mongodb = require('mongodb')
-const app = express();
-
 
 const router = express.Router();
 
@@ -20,22 +18,21 @@ router.get('/', async (req,res) => {
 
 
 
-router.get('/lessons', async (req,res,next) => {
+router.get('/lessons', async (req,res) => {
     const lessons = await loadlesson();
     res.send(await lessons.find({}).toArray())
-next();
 } );
 
 
 
-router.get('/orders', async (req,res,next) => {
+router.get('/orders', async (req,res) => {
     const orders = await loadorders();
     res.send(await orders.find({}).toArray())
 } );
 
 //add post
 
-router.post('/orders', async(req, res, next) => {
+router.post('/orders', async(req, res) => {
 
     const orders = await loadorders();
     await orders.insertOne({
@@ -48,8 +45,8 @@ router.post('/orders', async(req, res, next) => {
     });
 
     res.status(201).send()
-    next()
 })
+
 
 
 
@@ -81,13 +78,6 @@ return client.db("After-School-Club").collection('Orders');
 
 
     }
-
-
-    
-app.use((req, res, next) => {
-    console.log(req);
-    next();
-  });
 
 
 module.exports = router;

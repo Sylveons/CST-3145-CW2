@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+</head>
+
+<body>
+
+
+    <div id="app">
+        <main>
+
+
+            <h1 v-text="sitename"></h1>
+
+
+            <div v-for="order in orders">
+
+
+               
+                <p v-html="order.Firstname"></p>
+                <p v-html="order.Lastname"></p>
+                <p v-html="order.Phonenumber"></p>
+                <p v-html="order.Lessonid"></p>
+                <p v-html="order.Spaces"></p>
+                <br>
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+        </main>
+
+
+        <script>
+
+
+            let app = new Vue({
+
+                el: '#app',
+
+
+                data: {
+
+
+                    sitename: 'Orders',
+
+
+                    orders: {},
+
+                },
+
+                    created: function () {
+                        fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/orders').then(
+                            function (response) {
+
+                                response.json().then(
+                                    function (json) {
+
+                                        app.orders = json;
+
+                                        console.log(JSON.stringify(json))
+                                        orders.push(json)
+                                        console.log(orders);
+                                    });
+
+
+
+
+                            })
+
+
+
+
+                    }
+                })
+
+            
+        
+
+        </script>
+
+       
+
+</body>
+
+
+</html>
