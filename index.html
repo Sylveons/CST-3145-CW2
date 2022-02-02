@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div id="store">
+    <div id="app">
         <main>
             <h1 v-text="sitename"></h1>
 
@@ -23,7 +23,7 @@
 
 
             </header>
-            
+
 
             <div v-for="lesson in lessons">
                 <figure>
@@ -65,10 +65,16 @@
 
         <h2>Checkout</h2>
 
-        <p v-if="errors.length">
+
 
         <ul>
-            <li v-for="error in errors">{{ error }}</li>
+            <li v-for="lesson in cart">
+                <h2 v-text="lesson.Subject"></h2>
+                <p v-html="lesson.Location"></p>
+                <p v-html="lesson.Price"></p>
+                <p v-html="lesson.Spaces"></p>
+
+            </li>
         </ul>
         </p>
 
@@ -95,18 +101,13 @@
 
         <button class="Confirm" v-on:click="Validation()"> Confirm</button>
         <div v-for="lesson in cart">
-            <figure>
-                <figure>
-                    <img v-bind:src="lesson.Image" height="100px" width="100px">
-                </figure>
 
+            <h2 v-text="lesson.Subject"></h2>
+            <p v-html="lesson.Location"></p>
+            <p v-html="lesson.Price"></p>
+            <p v-html="cartCount(lesson)"></p>
 
-                <h2 v-text="lesson.Subject"></h2>
-                <p v-html="lesson.Location"></p>
-                <p v-html="lesson.Price"></p>
-                <p v-html="cartCount(lesson)"></p>
-
-                <button class="add to cart" v-on:click="remove(lesson)"> Remove</button>
+            <button class="add to cart" v-on:click="remove(lesson)"> Remove</button>
 
             </figure>
         </div>
@@ -128,56 +129,41 @@
         <script>
 
 
+            let app = new Vue({
 
-            let store = new Vue({
-
-                el: '#store',
+                el: '#app',
 
 
                 data: {
+
+
+
                     lessons: {},
+
+
 
 
                     sitename: 'After School Clubs',
 
 
-
-                    cart: [],
                     
-                  
+                    cart: [],
 
 
 
-
-                },  
-                
-                 Checkout: false,
-                
-                    order: {
-
-
-
-                        firstName: null,
-                        lastName: null,
-                        Phone: null,
-                        
-                    },
-
-
-
-
-                created: function () {
+                },
+                mounted: function () {
                     fetch('http://dominique-walker-cst1345-cw2.herokuapp.com/lessons').then(
                         function (response) {
 
                             response.json().then(
                                 function (json) {
 
-                                    store.lessons = json;
+                                    app.lessons = json;
 
                                     console.log(JSON.stringify(json))
                                     lessons.push(json)
-                                    console.log(lessons);
+                                    console.log("lessons retreived sucessfully");
                                 });
 
 
@@ -188,13 +174,20 @@
                 },
 
 
+
+
+
+
                 methods: {
 
                     addToCart(lesson) {
 
                         lesson.Spaces--;
 
-                        { this.cart.push(lesson); }
+                        {
+                            this.cart.push(lesson);
+                            console.log(this.cart)
+                        }
 
                     },
 
@@ -235,104 +228,9 @@
 
                     },
 
-                    SortH() {
-
-
-                        this.showLesson2 = this.showLesson2 ? false : true;
-                        this.showLesson = this.showLesson ? false : true;
-
-
-                    },
-
-                    Validation() {
-
-                        if (this.firstName && this.lastName && this.Phone) {
-                            return true;
-                        }
-                        var numbers = /^[0-9]+$/;
-                        var letters = /^[A-Za-z]+$/;
-
-                        this.errors = [];
-
-                        if (!this.order.firstName) {
-                            this.errors.push('First Name required.');
-                        }
-
-                        if (!this.order.firstName.match(letters)) {
-                            this.errors.push('First Name must only contain letters.');
-                        }
-
-
-                        if (!this.order.lastName) {
-                            this.errors.push('Last Name required.');
-
-                        }
-
-                        if (!this.order.lastName.match(letters)) {
-                            this.errors.push('Last Name must only contain letters.');
-                        }
-                        if (!this.order.Phone) {
-                            this.errors.push('Phone Number required.');
-                        }
-
-
-                        if (!this.order.Phone.match(numbers)) {
-                            this.errors.push('Phone Number must only contain numbers.');
-                        }
-
-
-
-
-                        if (this.errors.length === 0) {
-
-                            alert("Order Confirmed!");
-
-
-                        }
-                    },
-
-
-
-
 
 
                     computed: {
-                        Sortedlessons() {
-
-
-
-
-                            if (this.lessons.length > 0) {
-                                let lessonsArray = this.lessons.slice(0);
-                                function compare(a, b) {
-
-                                    if (a.Price.toLowerCase() < b.Price.toLowerCase())
-                                        return -1;
-                                    if (a.Price.toLowerCase() > b.Price.toLowerCase())
-                                        return 1;
-                                    return 0;
-                                }
-                                return lessonsArray.sort(compare);
-                            }
-
-                        },
-
-
-                        Sortedlessons2() {
-
-
-                            let lessonsArray = this.lessons.slice(0);
-                            function compare(a, b) {
-
-                                if (a.Price.toLowerCase() > b.Price.toLowerCase())
-                                    return -1;
-                                if (a.Price.toLowerCase() < b.Price.toLowerCase())
-                                    return 1;
-                                return 0;
-                            }
-                            return lessonsArray.sort(compare);
-
-                        },
 
 
 
