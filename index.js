@@ -15,6 +15,7 @@ app.use(function(req, res, next) {
     // Built-in fs.stat gets info about a file
     fs.stat(filePath, function(err, fileInfo) {
     if (err) {
+        res.send("file not found")
     next();
     return;
     }
