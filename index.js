@@ -15,7 +15,12 @@ const path = require('path')
 
 
 
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use(function(req, res, next) {
+    console.log("Request IP: " + req.url);
+    console.log("Request date: " + new Date());
+    next();
+    });
+    
 
 
 
@@ -23,19 +28,13 @@ app.use(express.static('public'));
 
 
 
-//middleware
+
 app.use(bodyParser.json());
 
 
 const posts = require('./routes/api/posts')
 
 app.use('/', posts)
-
-app.use('/Lessons',function(req, res, next){
-    console.log("A new request received at " + Date.now());
-    next();
-});
-
 
 
 
