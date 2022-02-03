@@ -17,8 +17,9 @@
     <div id="app">
         <main>
             <h1 v-text="sitename"></h1>
-
-
+            <form action="orders.html">
+                <input type="submit" value="View past orders" />
+            </form>
 
 
 
@@ -27,6 +28,8 @@
                     <img v-bind:src="lesson.Image" height="100px" width="100px">
                 </figure>
 
+
+                <h2 v-html="lesson.Subject"></h2>
                 <p v-html="lesson.Location"></p>
                 <p v-html="lesson.Price"></p>
                 <p v-html="lesson.Spaces"></p>
@@ -211,7 +214,7 @@
 
 
 
-                    sendorder() {
+                    sendorder(lesson) {
 
 
 
@@ -220,6 +223,7 @@
                             Firstname: this.order.firstName,
                             Lastname: this.order.lastname,
                             Phonenumber: this.order.Phone,
+                            Lessonid: cart.map(a => a.lesson.id),
                             Spaces: 1
                         };
                         // set the url to your server and route
